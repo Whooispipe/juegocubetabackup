@@ -2,5 +2,9 @@ bucket.png
 drop.png
 drop.wav
 dropBad.png
+drop_blue.png
+drop_green.png
+drop_red.png
+drop_yellow.png
 hurt.ogg
 rain.mp3
