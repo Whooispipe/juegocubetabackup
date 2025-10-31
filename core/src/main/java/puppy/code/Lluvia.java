@@ -167,13 +167,24 @@ public class Lluvia {
         }
 
         public List<Gota> spawnTick(Textures t, float ancho, float alto) {
-            List<Gota> nuevas = new ArrayList<>();
-            if (MathUtils.randomBoolean(0.06f)) nuevas.add(crearAzul(t, ancho, alto));
-            if (MathUtils.randomBoolean(0.03f)) nuevas.add(crearRoja(t, ancho, alto));
-            if (numero >= 2 && MathUtils.randomBoolean(0.015f)) nuevas.add(crearAmarilla(t, ancho, alto));
-            if (numero >= 2 && MathUtils.randomBoolean(0.015f)) nuevas.add(crearVerde(t, ancho, alto));
-            return nuevas;
-        }
+    List<Gota> nuevas = new ArrayList<>();
+    if (MathUtils.randomBoolean(0.06f)) nuevas.add(crearAzul(t, ancho, alto));
+    // Aumenta la frecuencia de las gotas rojas para los niveles altos
+    float probRoja = 0.03f; // Nivel 1 (3%)
+    if (numero == 2) probRoja = 0.16f; // Nivel 2 (16%)
+    if (numero >= 3) probRoja = 0.30f; // Nivel 3 (¡30%!)
+
+    if (MathUtils.randomBoolean(probRoja)) nuevas.add(crearRoja(t, ancho, alto));
+
+    // Si quieres hacer más difícil, puedes aumentar también amarillas y verdes si deseas
+    float probExtra = 0.015f;
+    if (numero == 2) probExtra = 0.025f;
+    if (numero >= 3) probExtra = 0.04f;
+
+    if (numero >= 2 && MathUtils.randomBoolean(probExtra)) nuevas.add(crearAmarilla(t, ancho, alto));
+    if (numero >= 2 && MathUtils.randomBoolean(probExtra)) nuevas.add(crearVerde(t, ancho, alto));
+    return nuevas;
+}
 
         private Gota.Movimiento movimientoParaAzulYRoja() {
             if (numero >= 3 && MathUtils.randomBoolean(0.5f)) return new MovimientoDiagonal();
