@@ -23,10 +23,9 @@ public class GameScreen implements Screen {
         this.batch = game.getBatch();
         this.font = game.getFont();
 
-        // Texturas y sonidos
         Sound hurtSound = Gdx.audio.newSound(Gdx.files.internal("hurt.ogg"));
         Texture bucket = new Texture(Gdx.files.internal("bucket.png"));
-        Texture bucketHurt = safeTexture("bucket_hurt.png"); // opcional
+        Texture bucketHurt = safeTexture("bucket_hurt.png");
 
         tarro = new Tarro(bucket, bucketHurt, hurtSound);
 
@@ -40,12 +39,10 @@ public class GameScreen implements Screen {
 
         lluvia = new Lluvia(azul, roja, verde, amarilla, dropSound, rainMusic);
 
-        // cámara
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
         batch = new SpriteBatch();
 
-        // crear entidades
         tarro.crear();
         lluvia.crear();
     }
@@ -65,14 +62,12 @@ public class GameScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
 
-        // HUD
         font.draw(batch, "Gotas azules: " + lluvia.getAzulesRecogidas() + "/" + lluvia.getObjetivoAzules(), 5, 475);
         font.draw(batch, "Vidas: " + tarro.getVidas() + "/" + tarro.getVidaMax(), 670, 475);
         font.draw(batch, "Nivel: " + lluvia.getNivelNumero(), 380, 475);
         font.draw(batch, "Puntos: " + tarro.getPuntos(), 5, 450);
         font.draw(batch, "HighScore: " + game.getHigherScore(), camera.viewportWidth/2f - 50, 450);
 
-        // Movimiento y lógica
         tarro.actualizarMovimiento();
         if (!lluvia.actualizarMovimiento(tarro)) {
             if (game.getHigherScore() < tarro.getPuntos())
