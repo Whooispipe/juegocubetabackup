@@ -108,40 +108,6 @@ public class Lluvia {
     public int getObjetivoAzules() { return nivel.getObjetivoAzules(); }
     public int getAzulesRecogidas() { return nivel.getAzulesRecogidas(); }
 
-    // Movimiento sigue aquí, ahora como clase externa o puedes extraerla a su propio archivo si prefieres
-    public static class MovimientoVertical implements Gota.Movimiento {
-        @Override
-        public void actualizar(Gota gota, float delta, float ancho, float alto) {
-            gota.setY(gota.getY() - gota.getVelocidadY() * delta);
-            if (gota.getY() + gota.getAlto() < 0) {
-                gota.setActiva(false);
-            }
-        }
-    }
-
-    public static class MovimientoDiagonal implements Gota.Movimiento {
-        @Override
-        public void actualizar(Gota gota, float delta, float ancho, float alto) {
-            float nx = gota.getX() + gota.getVelocidadX() * delta;
-            float ny = gota.getY() - gota.getVelocidadY() * delta;
-
-            if (nx < 0) {
-                nx = 0;
-                gota.setVelocidadX(Math.abs(gota.getVelocidadX()));
-            } else if (nx + gota.getAncho() > ancho) {
-                nx = ancho - gota.getAncho();
-                gota.setVelocidadX(-Math.abs(gota.getVelocidadX()));
-            }
-
-            gota.setX(nx);
-            gota.setY(ny);
-
-            if (gota.getY() + gota.getAlto() < 0) {
-                gota.setActiva(false);
-            }
-        }
-    }
-
     public static class Nivel {
         private final int numero;
         private final int objetivoAzules;
@@ -186,17 +152,17 @@ public class Lluvia {
     return nuevas;
 }
 
-        private Gota.Movimiento movimientoParaAzulYRoja() {
+        private Movimiento movimientoParaAzulYRoja() {
             if (numero >= 3 && MathUtils.randomBoolean(0.5f)) return new MovimientoDiagonal();
             return new MovimientoVertical();
         }
 
-        private Gota.Movimiento vertical() { return new MovimientoVertical(); }
+        private Movimiento vertical() { return new MovimientoVertical(); }
 
         private Gota crearAzul(Textures t, float ancho, float alto) {
             float x = MathUtils.random(0, ancho - 64);
             float vy = MathUtils.random(160f, 240f);
-            Gota.Movimiento m = movimientoParaAzulYRoja();
+            Movimiento m = movimientoParaAzulYRoja();
             GotaAzul g = new GotaAzul(x, alto, vy, t.azul, m);
             if (m instanceof MovimientoDiagonal) {
                 g.setVelocidadX(MathUtils.randomSign() * MathUtils.random(80f, 120f));
@@ -207,7 +173,7 @@ public class Lluvia {
         private Gota crearRoja(Textures t, float ancho, float alto) {
             float x = MathUtils.random(0, ancho - 64);
             float vy = MathUtils.random(180f, 270f);
-            Gota.Movimiento m = movimientoParaAzulYRoja();
+            Movimiento m = movimientoParaAzulYRoja();
             GotaRoja g = new GotaRoja(x, alto, vy, t.roja, m);
             if (m instanceof MovimientoDiagonal) {
                 g.setVelocidadX(MathUtils.randomSign() * MathUtils.random(110f, 150f));

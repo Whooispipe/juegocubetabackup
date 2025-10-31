@@ -56,9 +56,4 @@ public abstract class Gota {
     public void setMovimiento(Movimiento movimiento) { this.movimiento = movimiento; }
 
     public abstract void aplicar(IGotaReceptor receptor);
-
-    // Interfaz de movimiento (puede estar en archivo separado si lo prefieres)
-    public interface Movimiento {
-        void actualizar(Gota gota, float delta, float ancho, float alto);
-    }
 }
